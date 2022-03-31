@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class TypeWidget extends StatelessWidget {
-  const TypeWidget({Key? key, required this.type}) : super(key: key);
   final type;
+  const TypeWidget({Key? key, required this.type}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

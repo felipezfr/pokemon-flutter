@@ -27,7 +27,7 @@ class PokemonPageViewState extends State<PokemonPageView> {
       setState(() {
         selectedPokemon = controller.page!;
       });
-      print(selectedPokemon);
+      // print(selectedPokemon);
     });
   }
 
