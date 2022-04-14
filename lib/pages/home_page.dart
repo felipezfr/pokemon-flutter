@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pokemon_felipe/api/pokemon_api.dart';
+import 'package:pokemon_felipe/controllers/home_page_controller.dart';
 import 'package:pokemon_felipe/models/pokemon.dart';
+import 'package:pokemon_felipe/repositories/pokemon_repository_dio_imp.dart';
+import 'package:pokemon_felipe/repositories/pokemon_repository_imp.dart';
+import 'package:pokemon_felipe/service/dio_service_imp.dart';
 import 'package:pokemon_felipe/widgets/pokemon_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -12,18 +15,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<Pokemon> _list = [];
-
-  @override
-  void initState() {
-    super.initState();
-
-    PokemonAPI.getPokemons().then((value) => {
-          setState(() {
-            _list.addAll(value);
-          })
-        });
-  }
+  final HomePageController _controller =
+      HomePageController(PokemonRepositoryDioImp(
+    DioServiceImp(),
+  ));
 
   @override
   Widget build(BuildContext context) {
@@ -57,22 +52,28 @@ class _HomePageState extends State<HomePage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: GridView.count(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              crossAxisCount: 2,
-              mainAxisSpacing: 15,
-              crossAxisSpacing: 15,
-              children: _list
-                  .map(
-                    (pokemon) => PokemonCard(
-                      pokemonSelected: pokemon,
-                      pokemonList: _list,
-                    ),
-                  )
-                  .toList(),
-            )),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: ValueListenableBuilder<List<Pokemon?>>(
+            valueListenable: _controller.pokemons,
+            builder: (_, pokemons, __) {
+              return pokemons != []
+                  ? GridView.count(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 15,
+                      crossAxisSpacing: 15,
+                      children: pokemons
+                          .map(
+                            (e) => PokemonCard(
+                                pokemonList: pokemons, pokemonSelected: e),
+                          )
+                          .toList(),
+                    )
+                  : const CircularProgressIndicator();
+            },
+          ),
+        ),
       ),
     );
   }

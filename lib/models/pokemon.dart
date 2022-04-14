@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 class Pokemon {
-  final String name;
-  final int id;
-  final String img;
-  final String num;
-  final List<String> type;
+  late final String name;
+  late final int id;
+  late final String img;
+  late final String num;
+  late final List<String> type;
 
   Pokemon(
       {required this.name,
@@ -14,18 +14,16 @@ class Pokemon {
       required this.num,
       required this.type});
 
-  factory Pokemon.fromJson(Map<String, dynamic> json) {
-    return Pokemon(
-      name: json['name'],
-      id: json['id'],
-      img: json['img'],
-      num: json['num'],
-      type: (json['type'] as List<dynamic>)
-          .map(
-            (e) => e as String,
-          )
-          .toList(),
-    );
+  Pokemon.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    id = json['id'];
+    img = json['img'];
+    num = json['num'];
+    type = (json['type'] as List<dynamic>)
+        .map(
+          (e) => e as String,
+        )
+        .toList();
   }
 
   Color? get baseColor {

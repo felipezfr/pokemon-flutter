@@ -3,7 +3,7 @@ import 'package:pokemon_felipe/models/pokemon.dart';
 
 class PokemonPageView extends StatefulWidget {
   final Pokemon? selected;
-  final List<Pokemon> list;
+  final List<Pokemon?> list;
 
   const PokemonPageView({Key? key, required this.list, this.selected})
       : super(key: key);
@@ -37,7 +37,7 @@ class PokemonPageViewState extends State<PokemonPageView> {
       controller: controller,
       children: widget.list.map(
         (e) {
-          return e.id == selectedPokemon.round() + 1
+          return e!.id == selectedPokemon.round() + 1
               ? Image.network(
                   e.img,
                   fit: BoxFit.contain,

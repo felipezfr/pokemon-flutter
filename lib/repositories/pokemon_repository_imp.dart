@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:pokemon_felipe/models/pokemon.dart';
+import 'package:pokemon_felipe/repositories/pokemon_repository.dart';
+import 'package:pokemon_felipe/utils/api_utils.dart';
 
-class PokemonAPI {
-  static const _apiBase =
-      'https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json';
-
-  static Future<List<Pokemon>> getPokemons() async {
-    final response = await http.get(Uri.parse(_apiBase));
+class PokemonRepositoryImp implements PokemonRepository {
+  @override
+  Future<List<Pokemon>> getPokemons() async {
+    final response = await http.get(Uri.parse(API.apiBase));
 
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);

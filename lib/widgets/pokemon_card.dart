@@ -10,8 +10,8 @@ class PokemonCard extends StatelessWidget {
     required this.pokemonList,
   }) : super(key: key);
 
-  final Pokemon pokemonSelected;
-  final List<Pokemon> pokemonList;
+  final Pokemon? pokemonSelected;
+  final List<Pokemon?> pokemonList;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class PokemonCard extends StatelessWidget {
       child: Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
-            color: pokemonSelected.baseColor?.withOpacity(0.8),
+            color: pokemonSelected!.baseColor?.withOpacity(0.8),
             borderRadius: BorderRadius.circular(16)),
         child: Stack(
           children: [
@@ -37,8 +37,8 @@ class PokemonCard extends StatelessWidget {
               top: 55,
               left: 45,
               child: Image.network(
-                pokemonSelected.img,
-                // fit: BoxFit.contain,
+                pokemonSelected!.img,
+                fit: BoxFit.contain,
                 loadingBuilder: (BuildContext context, Widget child,
                     ImageChunkEvent? loadingProgress) {
                   if (loadingProgress == null) return child;
@@ -60,7 +60,7 @@ class PokemonCard extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(top: 10),
-                      child: Text(pokemonSelected.name,
+                      child: Text(pokemonSelected!.name,
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
@@ -69,7 +69,7 @@ class PokemonCard extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 10),
-                      child: Text('#${pokemonSelected.num}',
+                      child: Text('#${pokemonSelected!.num}',
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.normal,
@@ -81,7 +81,7 @@ class PokemonCard extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 8, left: 3),
                   child: Column(
-                    children: pokemonSelected.type
+                    children: pokemonSelected!.type
                         .map((e) => TypeWidget(type: e))
                         .toList(),
                   ),

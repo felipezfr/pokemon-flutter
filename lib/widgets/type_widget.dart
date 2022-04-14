@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TypeWidget extends StatelessWidget {
-  final type;
+  final String type;
   const TypeWidget({Key? key, required this.type}) : super(key: key);
 
   @override

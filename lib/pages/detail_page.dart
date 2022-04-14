@@ -6,8 +6,8 @@ class DetailPage extends StatefulWidget {
   const DetailPage(
       {Key? key, required this.pokemonSelected, required this.pokemonList})
       : super(key: key);
-  final Pokemon pokemonSelected;
-  final List<Pokemon> pokemonList;
+  final Pokemon? pokemonSelected;
+  final List<Pokemon?> pokemonList;
 
   @override
   State<DetailPage> createState() => _DetailPageState();
@@ -29,8 +29,8 @@ class _DetailPageState extends State<DetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.pokemonSelected.name),
-        backgroundColor: widget.pokemonSelected.baseColor,
+        title: Text(widget.pokemonSelected!.name),
+        backgroundColor: widget.pokemonSelected!.baseColor,
         shadowColor: Colors.transparent,
         titleTextStyle: const TextStyle(
           fontSize: 18,
@@ -47,7 +47,7 @@ class _DetailPageState extends State<DetailPage> {
                   width: MediaQuery.of(context).size.width,
                   height: 300,
                   decoration: BoxDecoration(
-                    color: widget.pokemonSelected.baseColor,
+                    color: widget.pokemonSelected!.baseColor,
                   ),
                   child: Column(
                     children: [
@@ -56,7 +56,7 @@ class _DetailPageState extends State<DetailPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Text(
-                            widget.pokemonSelected.name,
+                            widget.pokemonSelected!.name,
                             style: const TextStyle(
                                 fontSize: 35,
                                 fontWeight: FontWeight.bold,
@@ -64,7 +64,7 @@ class _DetailPageState extends State<DetailPage> {
                             textAlign: TextAlign.start,
                           ),
                           Text(
-                            '#${widget.pokemonSelected.num}',
+                            '#${widget.pokemonSelected!.num}',
                             style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
