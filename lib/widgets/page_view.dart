@@ -20,9 +20,12 @@ class PokemonPageViewState extends State<PokemonPageView> {
   @override
   void initState() {
     super.initState();
+
     selectedPokemon = widget.selected!.id.toDouble();
     controller = PageController(
-        viewportFraction: 0.4, initialPage: selectedPokemon.toInt() - 1);
+      viewportFraction: 0.5,
+      initialPage: selectedPokemon.toInt(),
+    );
     controller.addListener(() {
       setState(() {
         selectedPokemon = controller.page!;
@@ -39,13 +42,13 @@ class PokemonPageViewState extends State<PokemonPageView> {
         (e) {
           return e!.id == selectedPokemon.round() + 1
               ? Image.network(
-                  e.img,
+                  e.image,
                   fit: BoxFit.contain,
                 )
               : SizedBox(
                   // height: 2,
                   child: Image.network(
-                  e.img,
+                  e.image,
                   color: Colors.black45,
                   // fit: BoxFit.fill,
                 ));

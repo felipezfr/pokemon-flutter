@@ -13,19 +13,17 @@ class PokemonRepositoryDioImp implements PokemonRepository {
     try {
       final result = await _dioService.getDio().get(API.apiBase);
 
-      var json = jsonDecode(result.data)['pokemon'];
+      List json = jsonDecode(result.data)['pokemon'];
 
-      return json.map((e) => Pokemon.fromJson(e)).toList();
+      var pokemonList = json
+          .map(
+            (e) => Pokemon.fromJson(e),
+          )
+          .toList();
+
+      return pokemonList;
     } catch (e) {
       throw Exception("Erro ao buscar dados");
     }
-
-    // if (response.statusCode == 200) {
-    //   final json = jsonDecode(response.body);
-    //   final list = json['pokemon'] as List<dynamic>;
-    //   return list.map((e) => Pokemon.fromJson(e)).toList();
-    // } else {
-    //   throw Exception('Erro ao listar usando a API' + response.body.toString());
-    // }
   }
 }

@@ -26,6 +26,9 @@ class Pokemon {
         .toList();
   }
 
+  String get image =>
+      'https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/images/$num.png';
+
   Color? get baseColor {
     return _color(type: type[0]);
   }

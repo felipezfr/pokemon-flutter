@@ -36,47 +36,45 @@ class PokemonCard extends StatelessWidget {
             Positioned(
               top: 55,
               left: 45,
-              child: Image.network(
-                pokemonSelected!.img,
-                fit: BoxFit.contain,
-                loadingBuilder: (BuildContext context, Widget child,
-                    ImageChunkEvent? loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return Center(
-                    child: CircularProgressIndicator(
-                      value: loadingProgress.expectedTotalBytes != null
-                          ? loadingProgress.cumulativeBytesLoaded /
-                              loadingProgress.expectedTotalBytes!
-                          : null,
-                    ),
-                  );
-                },
+              child: SizedBox(
+                height: 120,
+                child: Image.network(
+                  pokemonSelected!.image,
+                  fit: BoxFit.contain,
+                  loadingBuilder: (BuildContext context, Widget child,
+                      ImageChunkEvent? loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                loadingProgress.expectedTotalBytes!
+                            : null,
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
             Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Text(pokemonSelected!.name,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                          )),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Text('#${pokemonSelected!.num}',
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.normal,
-                            color: Colors.black54,
-                          )),
-                    ),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Text(pokemonSelected!.name,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      )),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 0),
+                  child: Text('#${pokemonSelected!.num}',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.black54,
+                      )),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 8, left: 3),

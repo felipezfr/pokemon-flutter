@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:pokemon_felipe/models/pokemon.dart';
 import 'package:pokemon_felipe/repositories/pokemon_repository.dart';
-import 'package:pokemon_felipe/repositories/pokemon_repository_imp.dart';
 
 class HomePageController {
   final PokemonRepository _repository;

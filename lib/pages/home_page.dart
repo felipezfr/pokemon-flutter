@@ -66,7 +66,9 @@ class _HomePageState extends State<HomePage> {
                       children: pokemons
                           .map(
                             (e) => PokemonCard(
-                                pokemonList: pokemons, pokemonSelected: e),
+                              pokemonList: pokemons,
+                              pokemonSelected: e,
+                            ),
                           )
                           .toList(),
                     )
