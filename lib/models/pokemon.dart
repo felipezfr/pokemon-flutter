@@ -7,12 +7,13 @@ class Pokemon {
   late final String num;
   late final List<String> type;
 
-  Pokemon(
-      {required this.name,
-      required this.id,
-      required this.img,
-      required this.num,
-      required this.type});
+  Pokemon({
+    required this.name,
+    required this.id,
+    required this.img,
+    required this.num,
+    required this.type,
+  });
 
   Pokemon.fromJson(Map<String, dynamic> json) {
     name = json['name'];

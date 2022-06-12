@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pokemon_felipe/controllers/home_page_controller.dart';
 import 'package:pokemon_felipe/models/pokemon.dart';
-import 'package:pokemon_felipe/repositories/pokemon_repository_dio_imp.dart';
-import 'package:pokemon_felipe/repositories/pokemon_repository_imp.dart';
-import 'package:pokemon_felipe/service/dio_service_imp.dart';
-import 'package:pokemon_felipe/widgets/pokemon_card.dart';
+import 'package:pokemon_felipe/pages/home/widgets/pokemon_card.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.title}) : super(key: key);
@@ -15,13 +13,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final HomePageController _controller =
-      HomePageController(PokemonRepositoryDioImp(
-    DioServiceImp(),
-  ));
+  // final HomePageController _controller =
+  //     HomePageController(PokemonRepositoryDioImp(
+  //   DioServiceImp(),
+  // ));
 
   @override
   Widget build(BuildContext context) {
+    final _controller = context.read<HomePageController>();
+
     return Scaffold(
       appBar: AppBar(
         // elevation: 0,
@@ -66,8 +66,7 @@ class _HomePageState extends State<HomePage> {
                       children: pokemons
                           .map(
                             (e) => PokemonCard(
-                              pokemonList: pokemons,
-                              pokemonSelected: e,
+                              pokemon: e,
                             ),
                           )
                           .toList(),
