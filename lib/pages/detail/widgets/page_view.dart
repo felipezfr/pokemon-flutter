@@ -18,7 +18,7 @@ class PokemonPageView extends StatefulWidget {
 class PokemonPageViewState extends State<PokemonPageView> {
   late final PageController controllerPageView;
 
-  var currentPage = ValueNotifier<double?>(0.00);
+  // var currentPage = ValueNotifier<double?>(0.00);
 
   @override
   void initState() {
@@ -41,20 +41,8 @@ class PokemonPageViewState extends State<PokemonPageView> {
     final _controller = context.read<HomePageController>();
 
     controllerPageView.addListener(() {
-      // print(controllerPageView.page);
-      // print(controllerPageView.page!.floor());
-      currentPage.value = controllerPageView.page;
-
-      // if (currentPage.value == 0.0) {}
-      // print(currentPage.value);
-      // setState(() {
-      //
+      // currentPage.value = controllerPageView.page;
     });
-
-    double map(
-        double x, double inMin, double inMax, double outMin, double outMax) {
-      return (x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
-    }
 
     return ValueListenableBuilder<Pokemon?>(
       valueListenable: _controller.pokemonSelected,
@@ -68,100 +56,18 @@ class PokemonPageViewState extends State<PokemonPageView> {
           itemCount: _controller.pokemons.value.length,
           itemBuilder: ((context, page) {
             // print(page);
-            var pokemon = _controller.pokemons.value[page];
+            final pokemon = _controller.pokemons.value[page];
             return Align(
-              alignment: Alignment.center,
-              child: ValueListenableBuilder<double?>(
-                valueListenable: currentPage,
-                builder: (_, currentPageValue, child) {
-                  late double value;
-
-                  if (page == currentPageValue!.floor()) {
-                    value = currentPageValue - page;
-                    value = 1 - value;
-
-                    double widthImage = map(value, 0, 1, 200, 100);
-
-                    return SizedBox(
-                      child: Image.network(
-                        pokemon!.image,
-                        fit: BoxFit.fitWidth,
-                        width: 200,
-                      ),
-                    );
-                  } else if (page > currentPageValue.floor()) {
-                    value = page - currentPageValue;
-                    value = 1 - value;
-                    print(value);
-
-                    double widthNextImage = map(value, 0, 1, 100, 200);
-
-                    SizedBox(
-                      child: Image.network(
-                        pokemon!.image,
-                        color: Colors.black.withOpacity(0.4),
-                        width: 100,
-
-                        // fit: BoxFit.fill,
-                      ),
-                    );
-                  } else if (page < currentPageValue.floor()) {
-                    value = page - currentPageValue;
-                    value = 1 - value;
-                    print(value);
-
-                    double widthNextImage = map(value, 0, 1, 100, 200);
-
-                    SizedBox(
-                      child: Image.network(
-                        pokemon!.image,
-                        color: Colors.black.withOpacity(0.4),
-                        width: 100,
-
-                        // fit: BoxFit.fill,
-                      ),
-                    );
-                  }
-                  return Container();
-
-                  // print(currentPageValue);
-                  // print(pokemon!.id);
-                  // print(pokemonSelected!.id);
-                  // if (page == pokemonSelected!.id - 1) {
-                  //   return SizedBox(
-                  //     child: Image.network(
-                  //       pokemon!.image,
-                  //       fit: BoxFit.fitWidth,
-                  //       width: widthImage,
-                  //     ),
-                  //   );
-                  // } else if (page == pokemonSelected.id) {
-                  //   return SizedBox(
-                  //     // height: 2,
-                  //     // width: 100,
-                  //     child: Image.network(
-                  //       pokemon!.image,
-                  //       color: Colors.black.withOpacity(0.4),
-                  //       width: widthNextImage,
-
-                  //       // fit: BoxFit.fill,
-                  //     ),
-                  //   );
-                  // } else {
-                  //   // return Container();
-                  //   return SizedBox(
-                  //     // height: 2,
-                  //     // width: 100,
-                  //     child: Image.network(
-                  //       pokemon!.image,
-                  //       color: Colors.black.withOpacity(0.4),
-                  //       width: 100,
-
-                  //       // fit: BoxFit.fill,
-                  //     ),
-                  //   );
-                  // }
-                },
+              alignment: pokemon!.id == pokemonSelected!.id
+                  ? Alignment.bottomCenter
+                  : Alignment.center,
+              child: Image.network(
+                pokemon.image,
+                width: pokemon.id == pokemonSelected.id ? 200 : 100,
+                fit: BoxFit.contain,
+                color: pokemon.id != pokemonSelected.id
+                    ? Colors.black.withOpacity(0.4)
+                    : null,
               ),
             );
           }),

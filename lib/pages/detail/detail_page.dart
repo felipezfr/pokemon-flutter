@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:pokemon_felipe/controllers/home_page_controller.dart';
-import 'package:pokemon_felipe/models/pokemon.dart';
+import 'package:pokemon_felipe/pages/detail/widgets/detail_app_bar.dart';
+import 'package:pokemon_felipe/pages/detail/widgets/detail_header.dart';
 import 'package:pokemon_felipe/pages/detail/widgets/page_view.dart';
 import 'package:provider/provider.dart';
+
+import 'package:pokemon_felipe/controllers/home_page_controller.dart';
+import 'package:pokemon_felipe/models/pokemon.dart';
 
 class DetailPage extends StatefulWidget {
   const DetailPage({
@@ -16,15 +19,27 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
-  late ScrollController scrollController;
-
-  late final PageController _controllerPageView;
+  late ScrollController _scrollController;
 
   @override
   void initState() {
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
     super.initState();
-    scrollController = ScrollController();
-    _controllerPageView = PageController(viewportFraction: 0.4);
+  }
+
+  bool isOnTop = true;
+
+  _scrollListener() {
+    if (_scrollController.position.pixels > 37) {
+      setState(() {
+        isOnTop = false;
+      });
+    } else if (_scrollController.position.pixels <= 36) {
+      setState(() {
+        isOnTop = true;
+      });
+    }
   }
 
   @override
@@ -32,81 +47,165 @@ class _DetailPageState extends State<DetailPage> {
     final _controller = context.read<HomePageController>();
 
     return ValueListenableBuilder<Pokemon?>(
-        valueListenable: _controller.pokemonSelected,
-        builder: (_, pokemonSelected, __) {
-          return Scaffold(
-            appBar: AppBar(
-              title: Text(pokemonSelected!.name),
-              backgroundColor: pokemonSelected.baseColor,
-              shadowColor: Colors.transparent,
-              elevation: 0,
-              titleTextStyle: const TextStyle(
-                fontSize: 18,
-              ),
-            ),
-            body: SingleChildScrollView(
-              controller: scrollController,
-              physics: const ClampingScrollPhysics(),
-              child: Column(
-                children: [
-                  Column(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 300,
-                        decoration: BoxDecoration(
-                          color: pokemonSelected.baseColor,
+      valueListenable: _controller.pokemonSelected,
+      builder: (_, pokemonSelected, __) {
+        return Scaffold(
+          appBar: DetailAppBar(
+            name: pokemonSelected!.name,
+            num: pokemonSelected.num,
+            baseColor: pokemonSelected.baseColor!,
+            isOnTop: isOnTop,
+            appBar: AppBar(),
+          ),
+          body: SingleChildScrollView(
+            controller: _scrollController,
+            child: Column(
+              children: [
+                Stack(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 270,
+                      decoration: BoxDecoration(
+                        color: pokemonSelected.baseColor,
+                      ),
+                    ),
+                    Container(
+                      transform: Matrix4.translationValues(0.0, 220.0, 0.0),
+                      height: 55,
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(24),
+                          topRight: Radius.circular(24),
                         ),
-                        child: Column(
-                          children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      ),
+                    ),
+                    Positioned(
+                      top: 0,
+                      width: MediaQuery.of(context).size.width,
+                      child: DetailHeader(
+                        name: pokemonSelected.name,
+                        num: pokemonSelected.num,
+                        isOnTop: isOnTop,
+                      ),
+                    ),
+                    Positioned(
+                      top: 60,
+                      height: 200,
+                      width: MediaQuery.of(context).size.width,
+                      child: PokemonPageView(
+                        pokemonSelectedId: pokemonSelected.id,
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  height: 500,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                  ),
+                  child: Column(children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "Sobre",
+                            style: TextStyle(color: pokemonSelected.baseColor),
+                          ),
+                          style: TextButton.styleFrom(
+                            primary: pokemonSelected.baseColor,
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "Evolução",
+                            style: TextStyle(color: pokemonSelected.baseColor),
+                          ),
+                          style: TextButton.styleFrom(
+                            primary: pokemonSelected.baseColor,
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "Status",
+                            style: TextStyle(color: pokemonSelected.baseColor),
+                          ),
+                          style: TextButton.styleFrom(
+                            primary: pokemonSelected.baseColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 30.0,
+                        vertical: 20.0,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Biologia",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Row(
                               children: [
-                                Text(
-                                  pokemonSelected.name,
-                                  style: const TextStyle(
-                                    fontSize: 35,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
+                                const Text(
+                                  "Altura: ",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black54,
                                   ),
-                                  textAlign: TextAlign.start,
                                 ),
                                 Text(
-                                  '#${pokemonSelected.num}',
+                                  pokemonSelected.height,
                                   style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black54),
-                                  textAlign: TextAlign.start,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ],
                             ),
-                            Expanded(
-                              child: PokemonPageView(
-                                pokemonSelectedId: pokemonSelected.id,
-                              ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 0),
+                            child: Row(
+                              children: [
+                                const Text(
+                                  "Peso: ",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black54,
+                                  ),
+                                ),
+                                Text(
+                                  pokemonSelected.weight,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    transform: Matrix4.translationValues(0.0, -20.0, 0.0),
-                    height: 500,
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(24),
-                        topRight: Radius.circular(24),
+                          ),
+                        ],
                       ),
                     ),
-                  )
-                ],
-              ),
+                  ]),
+                )
+              ],
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }

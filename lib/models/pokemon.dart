@@ -6,6 +6,8 @@ class Pokemon {
   late final String img;
   late final String num;
   late final List<String> type;
+  late final String height;
+  late final String weight;
 
   Pokemon({
     required this.name,
@@ -13,6 +15,8 @@ class Pokemon {
     required this.img,
     required this.num,
     required this.type,
+    required this.height,
+    required this.weight,
   });
 
   Pokemon.fromJson(Map<String, dynamic> json) {
@@ -25,6 +29,8 @@ class Pokemon {
           (e) => e as String,
         )
         .toList();
+    height = json['height'];
+    weight = json['weight'];
   }
 
   String get image =>
